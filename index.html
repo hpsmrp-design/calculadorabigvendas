@@ -286,25 +286,35 @@ let itens=[]; // {nome,qtd,preco}
 
 /* Catálogo rápido (clique pra somar) */
 const CATALOGO = [
-  {nome:'Analgésico',  preco:600},
-  {nome:'Atadura',     preco:300},
-  {nome:'Bandagem',    preco:500},
-  {nome:'Medkit',      preco:2500},
-  {nome:'Raio-X',      preco:2500},
-  {nome:'Ressonância', preco:4000},
-  {nome:'Gesso',       preco:2500},
-  {nome:'Cirurgia',    preco:250000},
-  {nome:'Queimadura',  preco:2500},
-  {nome:'Outros Exames',preco:3000}
+  // Medicamentos
+  {nome:'Adrenalina',   preco:12000},
+  {nome:'Analgésico',   preco:600},
+  {nome:'Atadura',      preco:300},
+  {nome:'Bandagem',     preco:500},
+  {nome:'Medkit',       preco:2500},
+  {nome:'Ritmoneury',   preco:800},
+  {nome:'Sinkalm',      preco:800},
+  {nome:'Ursinho',      preco:30000},
+
+  // Exames / Procedimentos (se quiser manter)
+  {nome:'Raio-X',       preco:2500},
+  {nome:'Ressonância',  preco:4000},
+  {nome:'Outros Exames',preco:3000},
+  {nome:'Gesso',        preco:2500},
+  {nome:'Cirurgia',     preco:250000},
+  {nome:'Queimadura',   preco:2500},
+
+  // Atalhos/serviços extras (opcional)
+  {nome:'Tratamento (TT)', preco:2000}
 ];
+
 function renderCatalogo(){
   const box=$('catalogo'); box.innerHTML='';
-  CATALOGO.forEach((it,idx)=>{
+  CATALOGO.forEach((it)=>{
     const b=document.createElement('button');
     b.className='chip';
     b.textContent=`${it.nome} — ${fmtBRL(it.preco)}`;
     b.addEventListener('click', ()=>{
-      // incrementa 1 unidade do item (ou cria)
       const pos = itens.findIndex(x=>x.nome===it.nome && x.preco===it.preco);
       if(pos>=0) itens[pos].qtd += 1;
       else itens.push({nome:it.nome, qtd:1, preco:it.preco});
@@ -313,7 +323,6 @@ function renderCatalogo(){
     box.appendChild(b);
   });
 }
-
 /* Tabela de itens */
 function renderItens(){
   const tb=$('tbodyItens'); tb.innerHTML='';
