@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hospital Santa Marcelina — Venda p/ Estabelecimento</title>
+<style>
+:root{
+  --bg:#0b1220; --bg-2:#0f172a; --card:rgba(255,255,255,.9); --line:#e5e7eb; --text:#0f172a; --muted:#64748b;
+  --primary:#22c55e; --primary-hover:#16a34a; --secondary:#eef2ff; --danger:#ef4444; --ink:#111827; --ring:#22c55e;
+  --radius:20px; --shadow:0 10px 30px rgba(2,6,23,.12);
+}
+[data-theme="dark"]{
+  --bg:#0b1220; --bg-2:#0b1220; --card:rgba(15,23,42,.9); --line:#1f2937; --text:#e5e7eb; --muted:#94a3b8;
+  --primary:#22c55e; --primary-hover:#16a34a; --secondary:#1f2937; --danger:#ef4444; --ink:#e5e7eb; --ring:#34d399;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter, ui-sans-serif, system-ui, sans-serif}
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #16a34a22, transparent 60%),
+    radial-gradient(1200px 600px at 110% 10%, #22d3ee22, transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+  color:var(--text); line-height:1.5;
+}
+.wrap{max-width:1000px;margin:40px auto;padding:0 20px}
+
+/* Appbar */
+header.app{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;
+  background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow)}
+h1{font-size:1.35rem;margin:0;display:flex;align-items:center;gap:10px}
+.badge{font-size:.75rem;font-weight:700;padding:4px 8px;border-radius:999px;background:#dcfce7;color:#166534;border:1px solid #86efac}
+.subtitle{font-size:.85rem;color:var(--muted)}
+.brandmark{display:flex;align-items:center;gap:10px}
+.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#16a34a,#22d3ee);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 6px 18px rgba(34,197,94,.25)}
+.row{display:flex;gap:10px;align-items:center}
+.btn{appearance:none;border:0;border-radius:12px;padding:10px 16px;font-weight:800;cursor:pointer;font-size:.95rem;letter-spacing:.2px;transition:background .2s, transform .1s;box-shadow:var(--shadow)}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.primary:hover{background:var(--primary-hover);transform:translateY(-1px)}
+.btn.secondary{background:var(--secondary);color:#3730a3}
+[data-theme="dark"] .btn.secondary{background:#1f2937;color:#c7d2fe}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.icon{display:inline-flex;align-items:center;gap:8px}
+
+/* Cards / inputs */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
+.card h2{font-size:1.05rem;font-weight:700;margin-bottom:12px;color:var(--primary)}
+.pad{padding:20px}
+.grid{display:grid;gap:14px}
+@media(min-width:768px){.grid-2{grid-template-columns:1fr 1fr}}
+@media(min-width:920px){.grid-3{grid-template-columns:repeat(3,1fr)}}
+label{font-size:.9rem;color:var(--muted);margin-bottom:6px;display:block}
+input{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;font-size:1rem;background:transparent;color:var(--text);transition:border .2s, box-shadow .2s}
+input:focus{border-color:var(--ring);box-shadow:0 0 0 4px color-mix(in srgb, var(--ring) 22%, transparent);outline:none}
+.small-note{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;border-radius:14px;padding:10px 12px;margin-bottom:18px;font-weight:800;text-align:center}
+
+/* Chips catálogo */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#f1f5f9;border-radius:999px;padding:8px 12px;font-size:.9rem;font-weight:700;cursor:pointer}
+[data-theme="dark"] .chip{background:#111827;color:#e5e7eb;border-color:#374151}
+
+/* Tabela itens */
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border:1px solid var(--line);padding:10px;text-align:left}
+.table th{background:#f8fafc}
+[data-theme="dark"] .table th{background:#0b1220}
+.right{text-align:right}
+
+/* Recibo */
+.receipt{background:linear-gradient(0deg, rgba(255,255,255,.95), rgba(255,255,255,.9));border:1px dashed #cbd5e1;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+[data-theme="dark"] .receipt{background:linear-gradient(0deg, rgba(15,23,42,.95), rgba(15,23,42,.9));border-color:#334155}
+.receipt::after{content:"";position:absolute;inset:auto -20% -40% -20%;height:120px;background:radial-gradient(400px 120px at 50% 0%, #22c55e22, transparent 70%)}
+.receipt header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.brand{font-weight:900;font-size:1.15rem;color:var(--primary)}
+.muted{color:var(--muted);font-size:.9rem}
+.hl{font-weight:700}
+.tab{width:100%;border-collapse:collapse;margin-top:8px}
+.tab th,.tab td{border:1px solid var(--line);padding:10px;text-align:left;font-size:.95rem}
+[data-theme="dark"] .tab th,[data-theme="dark"] .tab td{border-color:#334155}
+.tab th{background:#f8fafc;color:var(--text)}
+[data-theme="dark"] .tab th{background:#0b1220}
+.total{display:flex;justify-content:flex-end;margin-top:14px}
+.total .box{border:2px solid #0ea5e9;border-radius:12px;padding:10px 16px;font-size:1.05rem;font-weight:800;color:#0ea5e9;background:linear-gradient(180deg,#eff6ff,#ffffff)}
+[data-theme="dark"] .total .box{background:transparent;border-color:#38bdf8;color:#38bdf8}
+.note{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:12px;padding:10px;margin-top:12px;font-size:.95rem;color:var(--muted)}
+[data-theme="dark"] .note{background:#0b1220;border-color:#334155}
+
+/* Toast */
+.toast{position:fixed;right:16px;bottom:16px;z-index:50;padding:12px 14px;border-radius:12px;background:#16a34a;color:white;font-weight:800;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:opacity .25s, transform .25s}
+.toast.show{opacity:1;transform:translateY(0)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="app">
+    <div class="brandmark">
+      <div class="logo">H</div>
+      <div>
+        <h1>Hospital Santa Marcelina <span class="badge">Venda p/ Estabelecimento</span></h1>
+        <div class="subtitle">Calculadora com recibo em PNG</div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn ghost icon" id="btnTema" title="Alternar tema" aria-label="Alternar tema">🌓 <span>Tema</span></button>
+    </div>
+  </header>
+
+  <div class="small-note">⚠️ Acesso restrito à Diretoria</div>
+
+  <!-- Dados da venda -->
+  <section class="card pad">
+    <h2>Dados da Venda</h2>
+    <div class="grid grid-2">
+      <div>
+        <label for="medicoNome">Médico (vendedor)</label>
+        <input id="medicoNome" placeholder="Ex.: Dr(a). Nome Sobrenome" />
+      </div>
+      <div>
+        <label for="medicoCrm">CRM do médico</label>
+        <input id="medicoCrm" placeholder="Ex.: CRM 123456" />
+      </div>
+      <div>
+        <label for="estabNome">Estabelecimento</label>
+        <input id="estabNome" placeholder="Ex.: Clínica Santa Luzia" />
+      </div>
+      <div>
+        <label for="respEstab">Responsável pelo estabelecimento</label>
+        <input id="respEstab" placeholder="Ex.: João da Silva" />
+      </div>
+      <div>
+        <label for="identResp">Identidade do responsável (RG/CPF)</label>
+        <input id="identResp" placeholder="Ex.: 000.000.000-00" />
+      </div>
+      <div>
+        <label for="obsVenda">Observações (opcional)</label>
+        <input id="obsVenda" placeholder="Ex.: Lote A, validade 30 dias..." />
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn secondary" id="limparDados">Limpar dados</button>
+    </div>
+  </section>
+
+  <!-- Catálogo rápido (clique pra somar) -->
+  <section class="card pad">
+    <h2>Catálogo rápido</h2>
+    <div class="chips" id="catalogo">
+      <!-- Será preenchido por JS -->
+    </div>
+  </section>
+
+  <!-- Itens da venda (calculadora) -->
+  <section class="card pad">
+    <h2>Itens da Venda</h2>
+    <div class="grid grid-3">
+      <div>
+        <label for="itemNome">Nome do item</label>
+        <input id="itemNome" placeholder="Ex.: Analgésico / Raio-X / Gesso" />
+      </div>
+      <div>
+        <label for="itemQtd">Quantidade</label>
+        <input id="itemQtd" type="number" min="1" value="1" />
+      </div>
+      <div>
+        <label for="itemPreco">Preço unitário (R$)</label>
+        <input id="itemPreco" type="number" min="0" step="0.01" value="0.00" />
+      </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn primary" id="addItem">Adicionar item</button>
+      <button class="btn ghost" id="limparItens">Limpar itens</button>
+    </div>
+
+    <table class="table" style="margin-top:12px">
+      <thead>
+        <tr><th>Item</th><th class="right">Qtd</th><th class="right">Preço</th><th class="right">Total</th></tr>
+      </thead>
+      <tbody id="tbodyItens"></tbody>
+      <tfoot>
+        <tr><th colspan="3" class="right">Subtotal</th><th class="right" id="tblSubtotal">R$ 0,00</th></tr>
+        <tr><th colspan="3" class="right">Desconto</th><th class="right" id="tblDesc">R$ 0,00</th></tr>
+        <tr><th colspan="3" class="right">Total</th><th class="right" id="tblTotal">R$ 0,00</th></tr>
+      </tfoot>
+    </table>
+
+    <div class="row" style="gap:8px;margin-top:8px;flex-wrap:wrap">
+      <span class="muted">Aplicar desconto:</span>
+      <button class="chip" data-desc="0">Nenhum</button>
+      <button class="chip" data-desc="0.2">CNPJ (20%)</button>
+      <button class="chip" data-desc="0.4">PM/Arcanjo (40%)</button>
+      <button class="chip" data-desc="0.2">Plano de Saúde (20%)</button>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <button class="btn primary" id="gerarRecibo">Gerar Recibo</button>
+    </div>
+  </section>
+
+  <!-- Recibo -->
+  <section class="pad" id="reciboArea" style="display:none">
+    <div class="receipt" id="receipt">
+      <header>
+        <div>
+          <div class="brand">Hospital Santa Marcelina</div>
+          <div class="muted">Recibo — Venda para Estabelecimento</div>
+        </div>
+        <div style="text-align:right">
+          <div class="muted">Data/Hora</div>
+          <div id="dataHora" class="hl"></div>
+          <div class="muted" style="margin-top:6px">Protocolo</div>
+          <div id="protocolo" class="hl"></div>
+        </div>
+      </header>
+
+      <table class="tab">
+        <tbody>
+          <tr><th style="width:38%">Médico (vendedor)</th><td id="outMedico">—</td></tr>
+          <tr><th>CRM</th><td id="outCrm">—</td></tr>
+          <tr><th>Estabelecimento</th><td id="outEstab">—</td></tr>
+          <tr><th>Responsável pelo estabelecimento</th><td id="outRespEstab">—</td></tr>
+          <tr><th>Identidade do responsável</th><td id="outIdentResp">—</td></tr>
+          <tr><th>Observações</th><td id="outObs">—</td></tr>
+        </tbody>
+      </table>
+
+      <table class="tab" style="margin-top:10px">
+        <thead>
+          <tr><th>Item</th><th style="width:90px">Qtd</th><th style="width:140px">Valor</th></tr>
+        </thead>
+        <tbody id="outItens"></tbody>
+      </table>
+
+      <table class="tab" style="margin-top:10px">
+        <tbody>
+          <tr><th>Subtotal</th><td class="right" id="r-subtotal">R$ 0,00</td></tr>
+          <tr><th>Desconto</th><td class="right" id="r-desc">R$ 0,00</td></tr>
+          <tr><th>Total</th><td class="right hl" id="r-total">R$ 0,00</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">✅ Venda autorizada pela Diretoria. Este documento não substitui a NFe.</div>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <button class="btn primary" id="salvarPng">Salvar em PNG</button>
+      <button class="btn danger" id="novaVenda">Nova Venda</button>
+    </div>
+  </section>
+
+</div>
+
+<div id="toast" class="toast">PNG salvo e ImgBB aberto!</div>
+
+<script>
+/* ===== Utilidades ===== */
+const $ = id => document.getElementById(id);
+const fmtBRL = v => (typeof v==='number'?v:Number(v)).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const agoraBR = () => new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date());
+function protocolo(){
+  const dt=new Date();
+  const y=String(dt.getFullYear()).slice(-2), m=String(dt.getMonth()+1).padStart(2,'0'), d=String(dt.getDate()).padStart(2,'0');
+  const h=String(dt.getHours()).padStart(2,'0'), i=String(dt.getMinutes()).padStart(2,'0'), s=String(dt.getSeconds()).padStart(2,'0');
+  const rand=Math.floor(1000+Math.random()*9000);
+  return `VE${y}${m}${d}-${h}${i}${s}-${rand}`;
+}
+function toast(msg){ const t=$('toast'); if(!t) return; if(msg) t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+
+/* ===== Tema ===== */
+(function tema(){
+  const root=document.documentElement;
+  const saved=localStorage.getItem('hsm_theme');
+  if(saved==='dark') root.setAttribute('data-theme','dark');
+  $('btnTema').addEventListener('click', ()=>{
+    const isDark=root.getAttribute('data-theme')==='dark';
+    if(isDark){ root.removeAttribute('data-theme'); localStorage.setItem('hsm_theme','light'); }
+    else{ root.setAttribute('data-theme','dark'); localStorage.setItem('hsm_theme','dark'); }
+  });
+})();
+
+/* ===== Estado da calculadora ===== */
+let itens=[]; // {nome,qtd,preco}
+
+/* Catálogo rápido (clique pra somar) */
+const CATALOGO = [
+  {nome:'Analgésico',  preco:600},
+  {nome:'Atadura',     preco:300},
+  {nome:'Bandagem',    preco:500},
+  {nome:'Medkit',      preco:2500},
+  {nome:'Raio-X',      preco:2500},
+  {nome:'Ressonância', preco:4000},
+  {nome:'Gesso',       preco:2500},
+  {nome:'Cirurgia',    preco:250000},
+  {nome:'Queimadura',  preco:2500},
+  {nome:'Outros Exames',preco:3000}
+];
+function renderCatalogo(){
+  const box=$('catalogo'); box.innerHTML='';
+  CATALOGO.forEach((it,idx)=>{
+    const b=document.createElement('button');
+    b.className='chip';
+    b.textContent=`${it.nome} — ${fmtBRL(it.preco)}`;
+    b.addEventListener('click', ()=>{
+      // incrementa 1 unidade do item (ou cria)
+      const pos = itens.findIndex(x=>x.nome===it.nome && x.preco===it.preco);
+      if(pos>=0) itens[pos].qtd += 1;
+      else itens.push({nome:it.nome, qtd:1, preco:it.preco});
+      renderItens();
+    });
+    box.appendChild(b);
+  });
+}
+
+/* Tabela de itens */
+function renderItens(){
+  const tb=$('tbodyItens'); tb.innerHTML='';
+  let subtotal=0;
+  itens.forEach((it,idx)=>{
+    const total=it.qtd*it.preco; subtotal+=total;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td>${it.nome}</td>
+      <td class="right">
+        <button class="chip" data-idx="${idx}" data-act="dec">−</button>
+        <span style="min-width:36px;display:inline-block;text-align:center">${it.qtd}</span>
+        <button class="chip" data-idx="${idx}" data-act="inc">+</button>
+      </td>
+      <td class="right">${fmtBRL(it.preco)}</td>
+      <td class="right">${fmtBRL(total)}</td>`;
+    tb.appendChild(tr);
+  });
+  $('tblSubtotal').textContent = fmtBRL(subtotal);
+  // recalcular desconto/total mantendo taxa atual
+  aplicarDesconto(taxaDesc);
+  return subtotal;
+}
+
+// Controles +/-
+document.addEventListener('click',(e)=>{
+  if(e.target.matches('button.chip[data-act]')){
+    const idx=Number(e.target.getAttribute('data-idx'));
+    const act=e.target.getAttribute('data-act');
+    if(Number.isInteger(idx) && itens[idx]){
+      if(act==='inc') itens[idx].qtd += 1;
+      if(act==='dec') itens[idx].qtd = Math.max(0, itens[idx].qtd-1);
+      if(itens[idx].qtd===0) itens.splice(idx,1);
+      renderItens();
+    }
+  }
+});
+
+/* Inserção manual */
+$('addItem').addEventListener('click', ()=>{
+  const nome=$('itemNome').value.trim();
+  const qtd =parseInt($('itemQtd').value||'0',10);
+  const preco=parseFloat($('itemPreco').value||'0');
+  if(!nome || qtd<=0 || isNaN(preco) || preco<0){ alert('Preencha nome, quantidade e preço corretamente.'); return; }
+  itens.push({nome,qtd,preco});
+  $('itemNome').value=''; $('itemQtd').value='1'; $('itemPreco').value='0.00';
+  renderItens();
+});
+$('limparItens').addEventListener('click', ()=>{
+  if(!confirm('Limpar todos os itens?')) return;
+  itens=[]; renderItens();
+});
+
+/* Descontos */
+let taxaDesc = 0; // 0..1
+function aplicarDesconto(taxa){
+  taxaDesc = Number(taxa||0);
+  const subtotal = itens.reduce((s,i)=> s + i.preco*i.qtd, 0);
+  const desc = subtotal * taxaDesc;
+  const total = subtotal - desc;
+  $('tblDesc').textContent = (taxaDesc>0? '− ' : '') + fmtBRL(desc);
+  $('tblTotal').textContent = fmtBRL(total);
+  return {subtotal, desc, total};
+}
+document.querySelectorAll('[data-desc]').forEach(btn=>{
+  btn.addEventListener('click', ()=> aplicarDesconto(btn.getAttribute('data-desc')));
+});
+
+/* Dados venda */
+$('limparDados').addEventListener('click', ()=>{
+  ['medicoNome','medicoCrm','estabNome','respEstab','identResp','obsVenda'].forEach(id=> $(id).value='');
+});
+
+/* Validação */
+function validarDados(){
+  const falt=[];
+  if(!$('medicoNome').value.trim()) falt.push('Médico (vendedor)');
+  if(!$('medicoCrm').value.trim())  falt.push('CRM do médico');
+  if(!$('estabNome').value.trim())  falt.push('Estabelecimento');
+  if(!$('respEstab').value.trim())  falt.push('Responsável pelo estabelecimento');
+  if(!$('identResp').value.trim())  falt.push('Identidade do responsável');
+  if(falt.length){ alert('Preencha os campos obrigatórios:\n- ' + falt.join('\n- ')); return false; }
+  return true;
+}
+
+/* Recibo */
+$('gerarRecibo').addEventListener('click', ()=>{
+  if(!validarDados()) return;
+  if(itens.length===0 && !confirm('Não há itens adicionados. Gerar recibo mesmo assim?')) return;
+
+  const tot = aplicarDesconto(taxaDesc); // garante subtotal/total atualizados
+
+  // Cabeçalho
+  $('dataHora').textContent = agoraBR();
+  $('protocolo').textContent = protocolo();
+  // Dados venda
+  $('outMedico').textContent = $('medicoNome').value.trim();
+  $('outCrm').textContent    = $('medicoCrm').value.trim();
+  $('outEstab').textContent  = $('estabNome').value.trim();
+  $('outRespEstab').textContent = $('respEstab').value.trim();
+  $('outIdentResp').textContent  = $('identResp').value.trim();
+  $('outObs').textContent        = $('obsVenda').value.trim() || '—';
+  // Itens no recibo
+  const tbody=$('outItens'); tbody.innerHTML='';
+  itens.forEach(it=>{
+    const line=it.qtd*it.preco;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${it.nome}</td><td>${it.qtd}</td><td>${fmtBRL(line)}</td>`;
+    tbody.appendChild(tr);
+  });
+  $('r-subtotal').textContent = fmtBRL(tot.subtotal);
+  $('r-desc').textContent     = (taxaDesc>0? '− ' : '') + fmtBRL(tot.desc);
+  $('r-total').textContent    = fmtBRL(tot.total);
+
+  $('reciboArea').style.display='block';
+  $('reciboArea').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+$('novaVenda').addEventListener('click', ()=>{
+  if(!confirm('Iniciar nova venda?')) return;
+  itens=[]; renderItens();
+  ['medicoNome','medicoCrm','estabNome','respEstab','identResp','obsVenda'].forEach(id=> $(id).value='');
+  taxaDesc=0; aplicarDesconto(0);
+  $('reciboArea').style.display='none';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+/* PNG + ImgBB */
+$('salvarPng').addEventListener('click', async ()=>{
+  const recibo=$('receipt');
+  if(!recibo){ alert('Gere o recibo antes de salvar.'); return; }
+  const canvas=await html2canvas(recibo,{backgroundColor:'#ffffff',scale:2});
+  const data=canvas.toDataURL('image/png');
+  const a=document.createElement('a'); a.href=data; a.download=`recibo-estabelecimento-${Date.now()}.png`; a.click();
+  window.open('https://pt-br.imgbb.com/','_blank');
+  toast('PNG salvo e ImgBB aberto!');
+});
+
+/* Inicial */
+renderCatalogo();
+renderItens();
+aplicarDesconto(0);
+</script>
+</body>
+</html>
